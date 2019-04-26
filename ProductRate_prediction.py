@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
+from sklearn.externals import joblib
 
 
 def load_data(filename):
@@ -29,22 +30,24 @@ def try_different_method(model, method):
     dt['predict'] = result
     dt.to_excel('Datasets/' + method +'.xls')
     print(method, ':', mean_absolute_error(y_test, result))
+    # save model
+    joblib.dump(model, 'Model/ProductRate_Rezha.pkl')
 
 
 filename='Datasets/成品率预测数据集--数字化后.xlsx'
 x_train, x_test, y_train, y_test = load_data(filename)
 
-from sklearn import neighbors
-model = neighbors.KNeighborsRegressor()
-try_different_method(model, 'KNeighborsRegressor')
-
-from sklearn import svm
-model = svm.SVR()
-try_different_method(model, 'SVR')
-
-from sklearn import ensemble
-model = ensemble.AdaBoostRegressor(n_estimators=50)
-try_different_method(model, 'Adaboost')
+# from sklearn import neighbors
+# model = neighbors.KNeighborsRegressor()
+# try_different_method(model, 'KNeighborsRegressor')
+#
+# from sklearn import svm
+# model = svm.SVR()
+# try_different_method(model, 'SVR')
+#
+# from sklearn import ensemble
+# model = ensemble.AdaBoostRegressor(n_estimators=50)
+# try_different_method(model, 'Adaboost')
 
 from sklearn import tree
 model = tree.DecisionTreeRegressor()
